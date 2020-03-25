@@ -1,0 +1,12 @@
+MAS rideau_robocup {
+
+	infrastructure: Centralised
+
+	environment: Krislet
+
+	agents:
+		agent1 sample_agent;
+
+	aslSourcePath:
+		"src/asl";
+}
