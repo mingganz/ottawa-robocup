@@ -2,11 +2,14 @@ MAS rideau_robocup {
 
 	infrastructure: Centralised
 
-	environment: Krislet
+	environment: KrisletEnv
 
 	agents:
 		agent1 sample_agent;
-
+		agent2 sample_agent_2;
+		agent3 sample_agent_3;
+		agent4 sample_agent_4;
+		agent5 sample_agent_5;
 	aslSourcePath:
 		"src/asl";
 }

@@ -66,6 +66,7 @@ class Brain extends Thread implements SensorInput
 	if(Pattern.matches("^before_kick_off.*",m_playMode))
 	    m_krislet.move( -Math.random()*52.5 , 34 - Math.random()*68.0 );
 
+	/*
 	while( !m_timeOver )
 	    {
 		object = m_memory.getObject("ball");
@@ -109,7 +110,9 @@ class Brain extends Thread implements SensorInput
 		    Thread.sleep(2*SoccerParams.simulator_step);
 		}catch(Exception e){}
 	    }
+
 	m_krislet.bye();
+		  */
     }
 
 
