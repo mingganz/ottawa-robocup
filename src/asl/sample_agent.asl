@@ -6,5 +6,6 @@
 !start.
 
 /* Plans */
-+!start : true <- burn.
-+fire <- run.
++!start : true <- burn;look.
++fire <- run;look.
++look <- looked;look.

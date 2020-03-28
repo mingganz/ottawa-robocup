@@ -19,7 +19,7 @@ import java.util.regex.*;
 //	This is main object class
 //
 //***************************************************************************
-class Krislet implements SendCommand
+class Krislet  extends Thread implements SendCommand
 {
     //===========================================================================
     // Initialization member functions
@@ -102,13 +102,25 @@ class Krislet implements SendCommand
     //---------------------------------------------------------------------------
     // This constructor opens socket for  connection with server
     public Krislet(InetAddress host, int port, String team) 
-	throws SocketException
+	throws IOException
     {
 	m_socket = new DatagramSocket();
 	m_host = host;
 	m_port = port;
 	m_team = team;
 	m_playing = true;
+	
+	   
+		byte[] buffer = new byte[MSG_SIZE];
+		DatagramPacket packet = new DatagramPacket(buffer, MSG_SIZE);
+
+		// first we need to initialize connection with server
+		init();
+
+		m_socket.receive(packet);
+		parseInitCommand(new String(buffer));
+		m_port = packet.getPort();
+		
     }
 																 
     //---------------------------------------------------------------------------
@@ -126,6 +138,7 @@ class Krislet implements SendCommand
     // This is main loop for player
     protected void mainLoop() throws IOException
     {
+   /*
 	byte[] buffer = new byte[MSG_SIZE];
 	DatagramPacket packet = new DatagramPacket(buffer, MSG_SIZE);
 
@@ -135,6 +148,7 @@ class Krislet implements SendCommand
 	m_socket.receive(packet);
 	parseInitCommand(new String(buffer));
 	m_port = packet.getPort();
+	*/
 
 	// Now we should be connected to the server
 	// and we know side, player number and play mode
@@ -143,7 +157,15 @@ class Krislet implements SendCommand
 	finalize();
     }
 
-
+    public void run()
+    {
+    	try {
+			mainLoop();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
     //===========================================================================
     // Implementation of SendCommand Interface
 
@@ -221,7 +243,10 @@ class Krislet implements SendCommand
 			    m.group(3));
     }
 
-
+    protected Brain getBrain()
+    {
+    	return (Brain)m_brain;
+    }
 
     //===========================================================================
     // Here comes collection of communication function

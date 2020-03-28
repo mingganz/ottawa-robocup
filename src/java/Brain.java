@@ -30,7 +30,7 @@ class Brain extends Thread implements SensorInput
 	m_side = side;
 	// m_number = number;
 	m_playMode = playMode;
-	start();
+	//start();
     }
 
 
@@ -58,7 +58,7 @@ class Brain extends Thread implements SensorInput
     // Move to a place on my side on a kick_off
     // ************************************************
 
-    public void run()
+    public void runAgent()
     {
 	ObjectInfo object;
 
@@ -66,8 +66,7 @@ class Brain extends Thread implements SensorInput
 	if(Pattern.matches("^before_kick_off.*",m_playMode))
 	    m_krislet.move( -Math.random()*52.5 , 34 - Math.random()*68.0 );
 
-	/*
-	while( !m_timeOver )
+	//while( !m_timeOver )
 	    {
 		object = m_memory.getObject("ball");
 		if( object == null )
@@ -111,8 +110,7 @@ class Brain extends Thread implements SensorInput
 		}catch(Exception e){}
 	    }
 
-	m_krislet.bye();
-		  */
+	//m_krislet.bye();
     }
 
 

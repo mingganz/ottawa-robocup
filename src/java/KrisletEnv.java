@@ -34,15 +34,16 @@ public class KrisletEnv extends Environment {
 
     @Override
     public boolean executeAction(String agName, Structure action) {
+    	Krislet krislet =null;
         logger.info("executing: "+action);
         System.out.println("Agent： "+agName);
         
     	if (!mAgents.containsKey(agName)) {
 			try {
-				Krislet krislet = new Krislet(host, port, team);
+				krislet = new Krislet(host, port, team);
 				mAgents.put(agName, krislet);
 				System.out.println("bb： "+agName);
-				krislet.mainLoop();
+				krislet.start();
 				System.out.println("gg： "+agName);
 			} catch (SocketException e) {
 				// TODO Auto-generated catch block
@@ -52,7 +53,17 @@ public class KrisletEnv extends Environment {
 				e.printStackTrace();
 			}
     	}
+    	else
+    	{
+    		krislet = mAgents.get(agName);
+    	}
 
+    	Brain brain = krislet.getBrain();
+    	if (brain != null) {
+    		System.out.println("Run Agent： "+agName);
+    		brain.runAgent();
+    	}
+    	
         if (action.getFunctor().equals("burn")) { // you may improve this condition
             //informAgsEnvironmentChanged();
 			addPercept(Literal.parseLiteral("fire"));
@@ -61,6 +72,17 @@ public class KrisletEnv extends Environment {
         }
 		else if (action.getFunctor().equals("run")){
 			logger.info("I am running away, follow me!");
+			return true;
+		}
+		else if (action.getFunctor().equals("look")){
+			logger.info("Look!");
+			addPercept(Literal.parseLiteral("looked"));
+			return true;
+		}
+		else if (action.getFunctor().equals("looked")){
+			logger.info("Looked!");
+			clearPercepts();
+			addPercept(Literal.parseLiteral("fire"));
 			return true;
 		}
 		else {

@@ -5,11 +5,11 @@ MAS rideau_robocup {
 	environment: KrisletEnv
 
 	agents:
-		agent1 sample_agent;
-		agent2 sample_agent_2;
-		agent3 sample_agent_3;
-		agent4 sample_agent_4;
-		agent5 sample_agent_5;
+		sample_agent[verbose=2] #1;
+		//agent2 sample_agent_2;
+		//agent3 sample_agent_3;
+		//agent4 sample_agent_4;
+		//agent5 sample_agent_5;
 	aslSourcePath:
 		"src/asl";
 }
