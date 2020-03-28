@@ -9,6 +9,8 @@
 //    Date:             March 4, 2008
 
 import java.lang.Math;
+import java.util.ArrayList; 
+import java.util.List; 
 import java.util.regex.*;
 
 class Brain extends Thread implements SensorInput
@@ -21,7 +23,7 @@ class Brain extends Thread implements SensorInput
 		 String team, 
 		 char side, 
 		 int number, 
-		 String playMode)
+		 String playMode, int playerNum)
     {
 	m_timeOver = false;
 	m_krislet = krislet;
@@ -30,6 +32,7 @@ class Brain extends Thread implements SensorInput
 	m_side = side;
 	// m_number = number;
 	m_playMode = playMode;
+	m_playerNum = playerNum;
 	start();
     }
 
@@ -61,58 +64,66 @@ class Brain extends Thread implements SensorInput
     public void run()
     {
 	ObjectInfo object;
+	env = new ArrayList<List<String>>(); 
+	List<String> objectData = new ArrayList<String>(); 
 
 	// first put it somewhere on my side
 	if(Pattern.matches("^before_kick_off.*",m_playMode))
 	    m_krislet.move( -Math.random()*52.5 , 34 - Math.random()*68.0 );
 
-	/*
+	
 	while( !m_timeOver )
 	    {
+		//Look for ball 
 		object = m_memory.getObject("ball");
-		if( object == null )
+		if( object != null )
 		    {
-			// If you don't know where is ball then find it
-			m_krislet.turn(40);
-			m_memory.waitForNewInfo();
+			objectData.add("ball"); 
+			objectData.add(Float.toString(object.m_direction)); 
+			objectData.add(Float.toString(object.m_distance)); 
+			env.add(objectData);
+			objectData.clear(); 
 		    }
-		else if( object.m_distance > 1.0 )
+		//Look for Goal 
+		if( m_side == 'l' )
+		    object = m_memory.getObject("goal r");
+		else
+		    object = m_memory.getObject("goal l");
+		if( object != null )
 		    {
-			// If ball is too far then
-			// turn to ball or 
-			// if we have correct direction then go to ball
-			if( object.m_direction != 0 )
-			    m_krislet.turn(object.m_direction);
-			else
-			    m_krislet.dash(10*object.m_distance);
+			objectData.add("goal"); 
+			objectData.add(Float.toString(object.m_direction)); 
+			objectData.add(Float.toString(object.m_distance)); 
+			env.add(objectData); 
+			objectData.clear(); 
 		    }
-		else 
-		    {
-			// We know where is ball and we can kick it
-			// so look for goal
-			if( m_side == 'l' )
-			    object = m_memory.getObject("goal r");
-			else
-			    object = m_memory.getObject("goal l");
-
-			if( object == null )
-			    {
-				m_krislet.turn(40);
-				m_memory.waitForNewInfo();
-			    }
-			else
-			    m_krislet.kick(100, object.m_direction);
-		    }
+	    }
 
 		// sleep one step to ensure that we will not send
 		// two commands in one cycle.
 		try{
 		    Thread.sleep(2*SoccerParams.simulator_step);
 		}catch(Exception e){}
-	    }
 
 	m_krislet.bye();
-		  */
+		  
+    }
+    
+    public List<List<String>> getENV() {
+    	return this.env; 
+    }
+    
+    public void performAction(String action, float amount){
+    	if(action.equals("Turn")){
+			m_krislet.turn(amount);
+			m_memory.waitForNewInfo();
+    	}
+    	if(action.equals("Kick")){
+    		m_krislet.kick(100, amount);
+    	}
+    	if(action.equals("Dash")){
+			m_krislet.dash(10*amount);
+    	}
     }
 
 
@@ -154,5 +165,7 @@ class Brain extends Thread implements SensorInput
     private char			m_side;
     volatile private boolean		m_timeOver;
     private String                      m_playMode;
+    private int 						m_playerNum;
+    public List<List<String>> env; 
     
 }
