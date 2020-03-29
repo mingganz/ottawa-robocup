@@ -58,7 +58,7 @@ class Brain extends Thread implements SensorInput
     // Move to a place on my side on a kick_off
     // ************************************************
 
-    public void runAgent()
+    public void run()
     {
 	ObjectInfo object;
 
@@ -144,6 +144,11 @@ class Brain extends Thread implements SensorInput
 
     }
 
+    // This function gets the memory object
+    public Memory getMemory()
+    {
+    	return m_memory;
+    }
 
     //===========================================================================
     // Private members
@@ -151,6 +156,6 @@ class Brain extends Thread implements SensorInput
     private Memory			m_memory;				// place where all information is stored
     private char			m_side;
     volatile private boolean		m_timeOver;
-    private String                      m_playMode;
+    public String                      m_playMode;
     
 }

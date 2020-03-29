@@ -109,6 +109,7 @@ class Krislet  extends Thread implements SendCommand
 	m_port = port;
 	m_team = team;
 	m_playing = true;
+	m_kicked_off = false;
 	
 	   
 		byte[] buffer = new byte[MSG_SIZE];
@@ -347,11 +348,11 @@ class Krislet  extends Thread implements SendCommand
     private int			m_port;			// server port
     private String		m_team;			// team name
     private SensorInput		m_brain;		// input for sensor information
-    private boolean             m_playing;              // controls the MainLoop
+    public boolean             m_playing;              // controls the MainLoop
     private Pattern message_pattern = Pattern.compile("^\\((\\w+?)\\s.*");
     private Pattern hear_pattern = Pattern.compile("^\\(hear\\s(\\w+?)\\s(\\w+?)\\s(.*)\\).*");
     //private Pattern coach_pattern = Pattern.compile("coach");
     // constants
     private static final int	MSG_SIZE = 4096;	// Size of socket buffer
-
+    public boolean m_kicked_off;
 }
