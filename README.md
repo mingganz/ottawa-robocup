@@ -1,1 +1,1 @@
-# ottawa-robocup
+# rideau-robocup
