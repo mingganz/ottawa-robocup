@@ -2,6 +2,7 @@
 
 import jason.asSyntax.*;
 import jason.environment.*;
+//import sun.tools.jstat.Literal;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -11,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.*;
 import java.util.regex.Pattern;
+import java.util.List;
+import java.util.ArrayList; 
 
 public class KrisletEnv extends Environment {
 
@@ -81,6 +84,22 @@ public class KrisletEnv extends Environment {
 			addPercept(Literal.parseLiteral("look"));
 			return true;
 		}
+		else if(action.getFunctor().equals("turnToBall")) {
+			logger.info("Turning to ball");
+			krislet.turn(this.getObjectInfo("ball", krislet).get(1));
+		}
+		else if(action.getFunctor().equals("turnToGoal")) {
+			logger.info("Turning to goal"); 
+			krislet.turn(this.getObjectInfo("goal", krislet).get(1));
+		}
+		else if(action.getFunctor().equals("kick")) {
+			logger.info("kicking"); 
+			krislet.kick(this.getObjectInfo("goal", krislet).get(0), this.getObjectInfo("goal", krislet).get(1));
+		}
+		else if(action.getFunctor().equals("dash")) {
+			logger.info("dashing"); 
+			krislet.dash(50);
+		}
 		else {
 			logger.info("executing: " + action + ", but not implemented");
 			return false;
@@ -93,7 +112,34 @@ public class KrisletEnv extends Environment {
         super.stop();
     }
     
-    
+    public ArrayList<Float> getObjectInfo(String objectType, Krislet m_krislet){
+    	ArrayList<Float> objectInfo = new ArrayList<Float>(); 
+    	ObjectInfo object; 
+    	Memory m_memory = m_krislet.getBrain().getMemory(); 
+    	
+    	object = m_memory.getObject(objectType); 
+    	if(object != null) {
+    		if(objectType == "goal") {
+    			char m_side = 'l'; 
+    			if(m_side == 'l')
+    				object = m_memory.getObject("goal r");
+    			else 
+    				object = m_memory.getObject("goal l");
+        		objectInfo.add(object.m_distance); 
+        		objectInfo.add(object.m_direction); 
+    		}
+    		else {
+        		objectInfo.add(object.m_distance); 
+        		objectInfo.add(object.m_direction); 
+    		}
+    	}
+    	else { //for some reason can't get the object so randomize
+    		objectInfo.add((float) (Math.random()*52.5));
+    		objectInfo.add((float) (Math.random()*52.5)); 
+    	}
+    	
+    	return objectInfo; 
+    }
     public void runAction(Krislet m_krislet)
 	{
 		ObjectInfo object;
