@@ -141,7 +141,10 @@ class Brain extends Thread implements SensorInput
     {						 
 	if(message.compareTo("time_over") == 0)
 	    m_timeOver = true;
-
+	if(message.compareTo("kick_off_l") == 0)
+		m_playMode = "kickOff"; 
+	if(message.compareTo("kick_off_r") == 0)
+		m_playMode = "kickOff"; 
     }
 
     // This function gets the memory object
@@ -155,7 +158,8 @@ class Brain extends Thread implements SensorInput
     private SendCommand	                m_krislet;			// robot which is controled by this brain
     private Memory			m_memory;				// place where all information is stored
     private char			m_side;
-    volatile private boolean		m_timeOver;
+    volatile public boolean		m_timeOver;
     public String                      m_playMode;
+
     
 }

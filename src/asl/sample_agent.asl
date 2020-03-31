@@ -7,5 +7,6 @@
 
 /* Plans */
 +!start : true <- look.
-+fire <- move;!look.
++beforeKickOff <- move;!look.
 +!look <- looked;!look.
++kickOff <- dash;!look.

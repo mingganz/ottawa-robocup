@@ -235,7 +235,7 @@ class Krislet  extends Thread implements SendCommand
 	    {
 		throw new IOException(message);
 	    }
-
+	m_playmode = m.group(3); 
 	// initialize player's brain
 	m_brain = new Brain(this,
 			    m_team, 
@@ -355,4 +355,5 @@ class Krislet  extends Thread implements SendCommand
     // constants
     private static final int	MSG_SIZE = 4096;	// Size of socket buffer
     public boolean m_kicked_off;
+    public String m_playmode; 
 }
