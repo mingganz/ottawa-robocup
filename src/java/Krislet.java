@@ -110,6 +110,7 @@ class Krislet  extends Thread implements SendCommand
 	m_team = team;
 	m_playing = true;
 	m_kicked_off = false;
+	m_before_kick_off = false; 
 	
 	   
 		byte[] buffer = new byte[MSG_SIZE];
@@ -355,5 +356,6 @@ class Krislet  extends Thread implements SendCommand
     // constants
     private static final int	MSG_SIZE = 4096;	// Size of socket buffer
     public boolean m_kicked_off;
+    public boolean m_before_kick_off;
     public String m_playmode; 
 }

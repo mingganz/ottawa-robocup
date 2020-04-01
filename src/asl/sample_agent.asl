@@ -9,4 +9,5 @@
 +!start : true <- look.
 +beforeKickOff <- move;!look.
 +!look <- looked;!look.
-+kickOff <- dash;!look.
++kickOff <- look;dash.
++offense <- dash;turn.
