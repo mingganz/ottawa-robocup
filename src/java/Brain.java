@@ -152,11 +152,23 @@ class Brain extends Thread implements SensorInput
     {
     	return m_memory;
     }
+    
+    // This function gets my side
+    public char getMyside()
+    {
+    	return m_side;
+    }
+
+    // This function gets my side
+    public String getPlayMode()
+    {
+    	return m_playMode;
+    }
 
     //===========================================================================
     // Private members
     private SendCommand	                m_krislet;			// robot which is controled by this brain
-    private Memory			m_memory;				// place where all information is stored
+    public Memory			m_memory;				// place where all information is stored
     private char			m_side;
     volatile public boolean		m_timeOver;
     public String                      m_playMode;

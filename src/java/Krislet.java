@@ -358,4 +358,5 @@ class Krislet  extends Thread implements SendCommand
     public boolean m_kicked_off;
     public boolean m_before_kick_off;
     public String m_playmode; 
+    public Memory  m_memory;
 }

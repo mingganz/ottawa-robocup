@@ -6,8 +6,11 @@
 !start.
 
 /* Plans */
-+!start : true <- look.
-+beforeKickOff <- move;!look.
-+!look <- looked;!look.
-+kickOff <- look;dash.
-+offense <- dash;turn.
++!start: true <- .print("start playing...");play.
++before_kick_off <- .print("move player to field...");move;!play.
++!play: kickOff <- .print("game is starting...");dash;!play.
++!play: no_ball | close_to_ball & no_goal <- .print("turn...");turn_fixed_angle;!play.
++!play: far_to_ball & not_face_to_ball <- .print("turn to ball...");turn;!play.
++!play: far_to_ball & face_to_ball <- .print("dash..."); dash;!play.
++!play: close_to_ball & have_goal <- .print("kick...");kick;!play.
++!play <- .wait(100);!play.
