@@ -116,6 +116,11 @@ public class KrisletEnv extends Environment {
 			runAction(krislet); 
 			return true; 
 		}
+		else if (action.getFunctor().equals("play")){
+			logger.info("play!");
+			//addPercept(Literal.parseLiteral("look"));
+			//return true;
+		}
 		else {
 			logger.info("executing: " + action + ", but not implemented");
 			return false;
@@ -182,31 +187,34 @@ public class KrisletEnv extends Environment {
 		}
 		
 		object = m_memory.getObject("ball");
-		if (object == null)
-			addPercept(Literal.parseLiteral("offense"));
-		if( object != null )
-		    {
-			//logger.info("turn"); 
+		if( object == null ) {
+			/*
+			logger.info("turn"); 
 			// If you don't know where is ball then find it
-			//m_krislet.turn(40);
-			//m_memory.waitForNewInfo();
-			addPercept(Literal.parseLiteral("ballVisible"));
-			if( object.m_distance > 1.0 )
-		    {
+			m_krislet.turn(40);
+			m_memory.waitForNewInfo(); */
+			clearPercepts();
+			addPercept(Literal.parseLiteral("no_ball"));
+		    }
+		else if( object.m_distance > 1.0 ) {
+			clearPercepts();
+			addPercept(Literal.parseLiteral("far_to_ball"));
 			// If ball is too far then
 			// turn to ball or 
 			// if we have correct direction then go to ball
-			addPercept(Literal.parseLiteral("ballFar"));
-			if( object.m_direction != 0 )
+			if( object.m_direction != 0 ) {
 			    //m_krislet.turn(object.m_direction);
-				addPercept(Literal.parseLiteral("ballInDirection"));
-			else
+				addPercept(Literal.parseLiteral("not_face_to_ball"));
+			}
+			else {
 			    //m_krislet.dash(10*object.m_distance);
-				addPercept(Literal.parseLiteral("ballInDirection"));
-		    }
-		    }
+				addPercept(Literal.parseLiteral("face_to_ball"));
+			}
+		}
 		else 
 		    {
+			clearPercepts();
+			addPercept(Literal.parseLiteral("close_to_ball"));
 			// We know where is ball and we can kick it
 			// so look for goal
 			if( m_side == 'l' )
@@ -214,15 +222,16 @@ public class KrisletEnv extends Environment {
 			else
 			    object = m_memory.getObject("goal l");
 	
-			if( object != null )
+			if( object == null )
 			    {
 				//m_krislet.turn(40);
 				//m_memory.waitForNewInfo();
-				addPercept(Literal.parseLiteral("goalVisible"));
+				addPercept(Literal.parseLiteral("no_goal"));
 			    }
-			else
-			  //  m_krislet.kick(100, object.m_direction);
-				addPercept(Literal.parseLiteral("offense"));
+			else {
+			    //m_krislet.kick(100, object.m_direction);
+				addPercept(Literal.parseLiteral("have_goal"));
+			}
 		    }
 	
 		// sleep one step to ensure that we will not send
