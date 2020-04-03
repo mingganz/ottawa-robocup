@@ -237,6 +237,7 @@ class Krislet  extends Thread implements SendCommand
 		throw new IOException(message);
 	    }
 	m_playmode = m.group(3); 
+	m_number =  Integer.parseInt(m.group(2)); 
 	// initialize player's brain
 	m_brain = new Brain(this,
 			    m_team, 
@@ -359,4 +360,5 @@ class Krislet  extends Thread implements SendCommand
     public boolean m_before_kick_off;
     public String m_playmode; 
     public Memory  m_memory;
+    public int m_number; 
 }

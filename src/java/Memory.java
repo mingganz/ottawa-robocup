@@ -38,7 +38,6 @@ class Memory
 	return null;
     }
 
-
     //---------------------------------------------------------------------------
     // This function waits for new visual information
     public void waitForNewInfo() 

@@ -28,7 +28,7 @@ class Brain extends Thread implements SensorInput
 	m_memory = new Memory();
 	//m_team = team;
 	m_side = side;
-	// m_number = number;
+	m_number = number;
 	m_playMode = playMode;
 	//start();
     }
@@ -172,6 +172,7 @@ class Brain extends Thread implements SensorInput
     private char			m_side;
     volatile public boolean		m_timeOver;
     public String                      m_playMode;
+    public int m_number; 
 
     
 }

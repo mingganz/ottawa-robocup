@@ -34,6 +34,7 @@ public class KrisletEnv extends Environment {
     	team = new String("Krislet-Rideau");
     	
     	mAgents = new HashMap<String, Krislet>();
+    	mPlayers = new HashMap<Integer, String>(); 
     }
 
     @Override
@@ -51,6 +52,7 @@ public class KrisletEnv extends Environment {
 			try {
 				krislet = new Krislet(host, port, team);
 				mAgents.put(agName, krislet);
+				mPlayers.put(krislet.m_number, agName); 
 				krislet.start();
 				krislet.setName(agName+"_SENSOR");
 			} catch (SocketException e) {
@@ -75,7 +77,7 @@ public class KrisletEnv extends Environment {
     		object = memory.getObject("ball");
     	
 		if (action.getFunctor().equals("move")){
-			logger.info("Kick off!");
+			logger.info("Kick off!s");
 			krislet.move( -Math.random()*52.5 , 34 - Math.random()*68.0 );
 		}
 		else if (action.getFunctor().equals("turn_fixed_angle")) {
@@ -94,8 +96,8 @@ public class KrisletEnv extends Environment {
 			if (object != null)
 				krislet.dash(10*object.m_distance);
 		}
-		else if (action.getFunctor().equals("kick")) {
-			logger.info("kick"); 
+		else if (action.getFunctor().equals("kickToGoal")) {
+			logger.info("kick to goal"); 
 			// TBD
 			object = memory.getObject("goal r");
 			if (object != null)
@@ -103,6 +105,12 @@ public class KrisletEnv extends Environment {
 		}
 		else if (action.getFunctor().equals("play")){
 			logger.info("play!");
+		}
+		else if (action.getFunctor().equals("kickToPlayer")) {
+			logger.info("Kick to player");
+			object = memory.getObject("player");
+			if(memory != null)
+				krislet.kick(100, object.m_direction);
 		}
 		else {
 			logger.info("executing: " + action + ", but not implemented");
@@ -147,6 +155,7 @@ public class KrisletEnv extends Environment {
     	return objectInfo; 
     }
 
+    
     public void checkEnv(Krislet m_krislet, String agName)
 	{
 		ObjectInfo object;
@@ -156,8 +165,6 @@ public class KrisletEnv extends Environment {
 		char mySide = brain.getMyside();
 		
 		m_krislet.m_memory = memory;
-		logger.info("playmode"); 
-		logger.info(playMode);
 		if (m_krislet.m_before_kick_off == false) {
 			// first put it somewhere on my side
 			logger.info("entered if..."); 
@@ -223,7 +230,19 @@ public class KrisletEnv extends Environment {
 				addPercept(agName, Literal.parseLiteral("have_goal"));
 			}
 		    }
-	
+		object = memory.getObject("player");
+		if(object == null)
+			addPercept(agName, Literal.parseLiteral("playerNotVisible"));
+		else{
+			PlayerInfo player = (PlayerInfo)object; 
+			if (player.m_uniformName != 0) {
+				logger.info("I see a player");
+				String percept = "playerVisible" + "(" + mPlayers.get(player.m_uniformName) + ")"; 
+				addPercept(agName, Literal.parseLiteral(percept));
+				}
+			else
+				addPercept(agName, Literal.parseLiteral("playerNotVisible"));	
+		}
 		// sleep one step to ensure that we will not send
 		// two commands in one cycle.
 		try{
@@ -235,4 +254,5 @@ public class KrisletEnv extends Environment {
 	private  int	port;
 	private  String	team;
 	Map<String, Krislet> mAgents;
+	Map<Integer, String> mPlayers; 
 }
