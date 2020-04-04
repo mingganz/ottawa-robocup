@@ -117,6 +117,16 @@ public class KrisletEnv extends Environment {
 			if(memory != null)
 				krislet.kick(100, object.m_direction);
 		}
+		else if (action.getFunctor().equals("getDistanceFromBall")) {
+			logger.info("DISTANCEFROMBALL");
+			object = memory.getObject("ball"); 
+			if(memory != null) {
+				if(object != null) {
+					String ballDistance = "distanceFromBall(" + String.valueOf(object.m_distance) + ")";
+					addPercept(agName, Literal.parseLiteral(ballDistance));
+				}
+			}	
+		}
 		else {
 			logger.info("executing: " + action + ", but not implemented");
 			return false;
@@ -137,7 +147,6 @@ public class KrisletEnv extends Environment {
 		ObjectInfo object;
 		Brain brain = m_krislet.getBrain();
 		Memory memory = brain.getMemory();
-		String playMode = brain.getPlayMode();
 		char mySide = brain.getMyside();
 		
 		m_krislet.m_memory = memory;

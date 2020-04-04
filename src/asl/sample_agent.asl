@@ -40,13 +40,12 @@
 +ball_visible: true <- .abolish(ball_visible).     
 
 +ball_visible: ball_near & have_goal <- -ball_not_visible;
-											  .turnToGoal;
+											  turnToGoal;
 											  .abolish(ball_visible);
-											  !kick.  
-										
-+!kick: playerVisible(X) <- .kickToPlayer.
+											  !kick.  									
++!kick: playerVisible(X) <- kickToPlayer.
 
-+!kick: playerNotVisible <- .kickToGoal.
++!kick: playerNotVisible <- kickToGoal.
 
 +!play: true <- play.
 				
