@@ -47,6 +47,19 @@
 
 +!kick: playerNotVisible <- kickToGoal.
 
++!dash: playerNotVisible <- dash.
+
++!dash: playerVisible(X) <- .send(X,tell,requestDistanceFromBall(self));
+							?distanceFromBall(Y, Z);
+							!getDistanceFromBall;
+							?distanceFromBall(L);
+							if(L > Y){
+							  	slowDash;	//Dash with power of just 10 or 5 (whichever makes the player seem casually running).
+							  }
+							  else{
+							  	dash;	//dash with full power (attachking mode).
+							  }.
+
 +!play: true <- play.
 				
 //To maintain the Consistency of Belief Base

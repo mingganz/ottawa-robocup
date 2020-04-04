@@ -99,6 +99,15 @@ public class KrisletEnv extends Environment {
 			logger.info("DASH"); 
 			if (object != null)
 				krislet.dash(10*object.m_distance);
+			else
+				krislet.dash(40);
+		}
+		else if (action.getFunctor().equals("slowDash")) {
+			logger.info("SLOWDASH");
+			if (object != null)
+				krislet.dash(object.m_distance);
+			else 
+				krislet.dash(10);
 		}
 		else if (action.getFunctor().equals("kickToGoal")) {
 			logger.info("KICKTOGOAL"); 
